@@ -14,7 +14,7 @@ const FILES_TO_CACHE = [
 const CACHE_NAME = "static-cache-v1";
 const DATA_CACHE_NAME = "data-cache-v1";
 
-// install
+// installation
 self.addEventListener("install", function (evt) {
   evt.waitUntil(
     caches
@@ -24,11 +24,9 @@ self.addEventListener("install", function (evt) {
         cache
           .addAll(FILES_TO_CACHE)
           .then((result) => {
-            // debugger;
             console.log("result of add all", result);
           })
           .catch((err) => {
-            // debugger;
             console.log("Add all error: ", err);
           });
       })
@@ -40,7 +38,7 @@ self.addEventListener("install", function (evt) {
   self.skipWaiting();
 });
 
-// activate
+// activation
 self.addEventListener("activate", function (evt) {
   evt.waitUntil(
     caches.keys().then((keyList) => {
@@ -67,7 +65,7 @@ self.addEventListener("fetch", function (evt) {
         .then((cache) => {
           return fetch(evt.request)
             .then((response) => {
-              // If the response was good, clone it and store it in the cache.
+              // stores info in cache if network available
               if (response.status === 200) {
                 cache.put(evt.request.url, response.clone());
               }
@@ -75,7 +73,7 @@ self.addEventListener("fetch", function (evt) {
               return response;
             })
             .catch((err) => {
-              // Network request failed, try to get it from the cache.
+              // retrieves info from cache if no network
               return cache.match(evt.request);
             });
         })
